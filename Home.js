@@ -13,7 +13,7 @@ import {userName} from "./Login";
 export default function Home({navigation}) {
   return (
     <View>
-      <Text>hello {userName}</Text>
+      <Text>hello</Text>
     </View>
 
     );
