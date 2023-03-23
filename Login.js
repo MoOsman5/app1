@@ -1,13 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
 import React,{useState} from 'react';
 import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity } from 'react-native';
-
+import { auth } from './firebase';
 
 
 export default function Login({navigation}) {
-  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
+
+  const handleLogin =()=>{
+    auth
+    .signInWithEmailAndPassword(email,password)
+    .then(userCredentials =>{
+      const user =userCredentials.user;
+      console.log('logged in with ',user.email);
+      navigation.navigate("Home");
+    })
+    .catch(error => alert(error.message))
+  }
+
   return (
     
     <View style={styles.container}>
@@ -19,9 +31,9 @@ export default function Login({navigation}) {
       />
         <TextInput
         style={styles.input}
-        placeholder="User Name"
-        value={userName}
-        onChangeText={setUserName}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
         
         
         
@@ -36,10 +48,7 @@ export default function Login({navigation}) {
         
       />
       <TouchableOpacity 
-        onPress={()=>{
-           
-          navigation.navigate("Home")
-        }}
+        onPress={handleLogin}
         style={styles.bu}>
         <Text style={styles.title}>Login</Text>
       </TouchableOpacity>

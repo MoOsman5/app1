@@ -1,9 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import React,{useState} from 'react';
 import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity } from 'react-native';
+import { auth } from './firebase';
 
 
-
+// const initialState ={email:'',
+//                      fullName:'',
+//                       userName:'',
+//                       password:'',
+//                       confirmPassword:'',
+//                       phone:''}
 export default function SignUp({navigation}) {
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
@@ -11,13 +17,32 @@ export default function SignUp({navigation}) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
+
+  const handleSignUp = ()=>{
+    if(password == confirmPassword){  
+        auth
+      .createUserWithEmailAndPassword(email,password)
+      .then(userCredentials =>{
+        const user =userCredentials.user;
+        
+        console.log(user.email);
+        navigation.navigate("Login")
+
+      })
+      .catch(error => alert(error.message))
+    }else{
+      alert("password and comfirm password not matchingt ")
+    }
+
+
+  }
   return (
     
     <View style={styles.container}>
         <Image
         style={styles.tinyLogo}
         source={{
-          uri: 'https://th.bing.com/th/id/OIP.P4jjzgiyc5pIN9ZYwIdOdQHaEK?w=286&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+          uri: 'https://th.bing.com/th/id/R.4f2a7962abd49f78d9267ddf43ad76ff?rik=YmPrppt9OenDCQ&pid=ImgRaw&r=0',
         }}
       />
              <TextInput
@@ -61,6 +86,7 @@ export default function SignUp({navigation}) {
         onChangeText={setPhone} 
       />
       <TouchableOpacity 
+        onPress={handleSignUp}
         style={styles.bu}>
         <Text style={styles.title}>Sign Up</Text>
       </TouchableOpacity>

@@ -6,15 +6,38 @@ const apiUrl = url + path + apiKey;
 import { StatusBar } from 'expo-status-bar';
 import React,{useState} from 'react';
 import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity } from 'react-native';
-import Login from './Login';
-import {userName} from "./Login";
+import { auth } from './firebase';
 
 
 export default function Home({navigation}) {
   return (
+    
     <View>
-      <Text>hello</Text>
+       <TouchableOpacity 
+          onPress={()=>{
+            navigation.navigate("Login")
+          }}
+          style={styles.t2}>
+          <Text style={styles.logout}>Log out</Text>
+        </TouchableOpacity>
+      <Text style={styles.text}>hello {auth.currentUser?.email}</Text>
     </View>
 
     );
   }
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    logout:{
+      color:'#4169e1',
+      marginLeft:250
+    },
+    text :{
+      textAlign:'center',
+      marginTop: 50
+    }
+  });
