@@ -8,15 +8,20 @@ import React,{useState} from 'react';
 import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity } from 'react-native';
 import { auth } from './firebase';
 
-
 export default function Home({navigation}) {
+  
+  const handleLogOut =()=>{
+    auth
+    .signOut()
+    .then(() => console.log('User signed out!'))
+      navigation.navigate("Login")
+  }
+
   return (
     
     <View>
        <TouchableOpacity 
-          onPress={()=>{
-            navigation.navigate("Login")
-          }}
+          onPress={handleLogOut}
           style={styles.t2}>
           <Text style={styles.logout}>Log out</Text>
         </TouchableOpacity>
