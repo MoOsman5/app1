@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React,{useState} from 'react';
 import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity } from 'react-native';
-import { auth } from './firebase';
+import { auth,db } from './firebase';
 
 
 export default function Login({navigation}) {
@@ -15,6 +15,7 @@ export default function Login({navigation}) {
     .then(userCredentials =>{
       const user =userCredentials.user;
       console.log('logged in with ',user.email);
+
       navigation.navigate("Home");
     })
     .catch(error => alert(error.message))

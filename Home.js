@@ -6,16 +6,21 @@ const apiUrl = url + path + apiKey;
 import { StatusBar } from 'expo-status-bar';
 import React,{useState} from 'react';
 import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity } from 'react-native';
-import { auth } from './firebase';
+import { auth, db } from './firebase';
 
 export default function Home({navigation}) {
+  const [s, setS] = useState('');
   
   const handleLogOut =()=>{
     auth
     .signOut()
     .then(() => console.log('User signed out!'))
+
       navigation.navigate("Login")
   }
+  db.collection('users').doc(auth.currentUser?.uid).get().then(doc =>{
+    setS(doc.data())
+  })
 
   return (
     
@@ -25,7 +30,9 @@ export default function Home({navigation}) {
           style={styles.t2}>
           <Text style={styles.logout}>Log out</Text>
         </TouchableOpacity>
-      <Text style={styles.text}>hello {auth.currentUser?.email}</Text>
+      <Text style={styles.text}>hello  {s.name}</Text>
+      <Text style={styles.text}>your user name :  {s.userName}</Text>
+      <Text style={styles.text}>your phone :  {s.Phone}</Text>
     </View>
 
     );
