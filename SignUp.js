@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React,{useState} from 'react';
 import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity } from 'react-native';
-import { auth } from './firebase';
+import { auth,db } from './firebase';
 
 
 // const initialState ={email:'',
@@ -18,15 +18,23 @@ export default function SignUp({navigation}) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
 
+
   const handleSignUp = ()=>{
     if(password == confirmPassword){  
         auth
       .createUserWithEmailAndPassword(email,password)
       .then(userCredentials =>{
         const user =userCredentials.user;
+
+        db.collection("users").doc(user.uid).set({
+          name: fullName,
+          userName :userName,
+          Phone:phone
+      })
+      // const s=  db.collection('users').doc(usre.uid).get()
         
-        console.log(user.email);
         navigation.navigate("Login")
+        
 
       })
       .catch(error => alert(error.message))
